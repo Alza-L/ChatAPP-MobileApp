@@ -52,21 +52,6 @@
         </FrameLayout>
 
         <EditText
-            android:id="@+id/inputName"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/background_input"
-            android:hint="@string/name"
-            android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp"/>
-
-        <EditText
             android:id="@+id/inputEmail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
@@ -76,6 +61,22 @@
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/_16sdp"
+            android:paddingEnd="@dimen/_16sdp"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/_13ssp"/>
+
+        <EditText
+            android:id="@+id/inputPhone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/background_input"
+            android:hint="@string/phone"
+            android:imeOptions="actionNext"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            android:maxLength="13"
             android:paddingStart="@dimen/_16sdp"
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/primary_text"

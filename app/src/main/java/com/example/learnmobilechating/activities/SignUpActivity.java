@@ -16,27 +16,22 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.learnmobilechating.databinding.ActivitySignUpBinding;
 import com.example.learnmobilechating.utilities.Constants;
-import com.example.learnmobilechating.utilities.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
-    private PreferenceManager preferenceManager;
     private String encodedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        preferenceManager = new PreferenceManager(getApplicationContext());
         setListener();
     }
     private void setListener() {
@@ -61,21 +56,18 @@ public class SignUpActivity extends AppCompatActivity {
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String, Object> user = new HashMap<>();
-        user.put(Constants.KEY_NAME, binding.inputName.getText().toString());
         user.put(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
+        user.put(Constants.KEY_PHONE, binding.inputPhone.getText().toString());
         user.put(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
         database.collection(Constants.KEY_COLLECTION_USER)
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
                     loading(false);
-                    preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                    preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
-                    preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
-                    preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    finish();
                 })
                 .addOnFailureListener(exception -> {
                     loading(false);
@@ -117,14 +109,14 @@ public class SignUpActivity extends AppCompatActivity {
         if (encodedImage == null) {
             showToast("Select profile image");
             return false;
-        } else if (binding.inputName.getText().toString().trim().isEmpty()) {
-            showToast("Enter name");
-            return false;
         } else if (binding.inputEmail.getText().toString().trim().isEmpty()) {
             showToast("Enter email");
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches()) {
             showToast("Enter valid email");
+            return false;
+        } else if (binding.inputPhone.getText().toString().trim().isEmpty()) {
+            showToast("Enter phone number");
             return false;
         } else if (binding.inputPassword.getText().toString().trim().isEmpty()) {
             showToast("Enter password");
@@ -132,7 +124,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (binding.inputConfirmPassword.getText().toString().trim().isEmpty()) {
             showToast("Confirm your password");
             return false;
-        } else if (binding.inputPassword.getText().toString().equals(binding.inputConfirmPassword.getText().toString())) {
+        } else if (!binding.inputConfirmPassword.getText().toString().trim().equals(binding.inputPassword.getText().toString().trim())) {
             showToast("Password & confirm password must be same");
             return false;
         } else {

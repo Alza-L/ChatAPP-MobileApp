@@ -8,4 +8,6 @@
     <string name="name">Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="phone">Phone</string>
+    <string name="email_phone">Email/phone number</string>
 </resources>
