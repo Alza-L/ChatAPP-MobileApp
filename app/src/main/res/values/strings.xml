@@ -10,4 +10,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="phone">Phone</string>
     <string name="email_phone">Email/phone number</string>
+    <string name="select_user">Select user</string>
+    <string name="type_a_message">Type a message</string>
 </resources>
